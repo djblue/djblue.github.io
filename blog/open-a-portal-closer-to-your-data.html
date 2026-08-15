@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="en"><head><script src="https://djblue.github.io/portal/main.js"></script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-162423165-1"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-162423165-1');</script><meta charset="UTF-8" /><meta content="width=device-width, initial-scale=1" name="viewport" /><title>Blog | Open a Portal Closer to Your Data</title><meta content="A key value proposition of ClojureScript has always been that it is Clojure. In
+this blog post we explore how true that statement is by trying to port the UI of
+Portal to run server-side to solve some of the more challenging aspects of
+Portal&apos;s RPC-based architecture." name="Description" /><meta content="var(--primary)" name="theme-color" /><link href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&amp;display=swap" rel="stylesheet" /><style>a { text-decoration: none; color: inherit; }</style><style>@media print { @page { margin: 0 0 0 0; size:8.5in 11in; } }</style><style>*::-webkit-scrollbar { background-color: var(--background); width: 8px; height: 8px; }*::-webkit-scrollbar-corner { opacity: 0 }*::-webkit-scrollbar-track  { opacity: 0 }*::-webkit-scrollbar-thumb  { background-color: var(--primary); }*::-webkit-scrollbar-thumb  { border-radius: 4px }</style></head><body style="font-family:Roboto, sans-serif;margin:0;min-height:100vh;padding:0;"><div><style>.G__6992{width:7.5vh;height:7.5vh;display:block;background:var(--primary)}.G__6994{fill-opacity:1;stroke-width:.5;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke:none;stroke-dasharray:none;fill:auto;stroke-linecap:round;opacity:1}.G__7021{position:fixed;top:0;right:0;width:7.5vh;height:7.5vh;z-index:2;background:var(--primary)}@media(min-width:850px){.G__7021{max-width:2.1em;max-height:2.1em;margin:1em}}.G__6980{position:relative}.G__6977{margin-bottom:40px}.G__6996{height:7.5vh;background:var(--primary)}@media(min-width:850px){.G__6996{display:none}}.G__7020{position:absolute;background:var(--background);bottom:0;z-index:0;width:100%;clip-path:polygon(0 0,0 100%,100% 100%);height:36vh}.G__6965{background:var(--primary);position:relative;margin:0 auto;color:var(--background);height:100vh;display:flex}.G__7007{position:absolute;bottom:0;color:var(--primary);font-weight:100}.G__7005{z-index:1;padding:20px;width:260px;box-sizing:border-box;height:100vh;display:flex;flex-direction:column;justify-content:space-between}.G__6985{text-transform:uppercase;margin:10px 0;padding-left:10px;font-size:1.6rem;list-style:none;font-weight:bold;border-left:6px solid var(--background)}.G__6985:hover{font-weight:bold}@media(max-width:850px){.G__6985{font-size:3.2rem}}.G__6989{opacity:1;fill:auto;fill-opacity:1;stroke:none;stroke-width:.295915;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1}.G__6987{width:100%;opacity:1}.G__7003{display:none}.G__6997{flex:1;position:fixed;top:0;right:0;left:0;opacity:.25;height:7.5vh;background:var(--primary)}@media(min-width:850px){.G__6997{display:none}}.G__6969{margin-top:80px}.G__6978{margin-top:60px;margin-bottom:10px}.G__6970{margin-top:60px;margin-bottom:0}.G__6968{max-width:800px}.G__6981{margin:0;padding:0}@media(min-width:850px){.G__6981{margin-top:40px}}.G__6979{width:100vw;top:0;height:100vh;position:absolute;z-index:2;overflow:auto;font-size:3em;box-sizing:border-box;transition:left .25s ease-in-out;background:var(--primary)}@media(min-width:850px){.G__6979{display:none}}.G__6982{text-transform:uppercase;margin:10px 0;padding-left:10px;font-size:1.6rem;list-style:none;font-weight:100;border-left:6px solid rgba(0,0,0,0)}.G__6982:hover{font-weight:bold}@media(max-width:850px){.G__6982{font-size:3.2rem}}.G__6966{z-index:1;overflow:auto;flex:1}.G__6990{fill-opacity:1;stroke-width:26.4884;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke:none;stroke-dasharray:none;fill:auto;stroke-linecap:round;opacity:1}.G__6967{background:var(--background);padding-top:10vh;color:var(--foreground);padding:40px 80px;box-sizing:border-box;min-height:100vh}@media(min-width:850px){.G__6967{border-left:1px solid var(--highlight)}}@media(max-width:850px){.G__6967{min-height:calc(100vh - 7.5vh);padding:10px 20px}}@media(max-width:850px){.G__7004{display:none}}.G__6988{fill:auto}.G__6971{text-align:right;font-weight:100;border:1px solid var(--highlight);color:var(--foreground);padding:10px}.G__6998{width:7.5vh;right:0;top:0;height:7.5vh;position:fixed;z-index:2;display:flex;background:var(--primary);left:0}@media(min-width:850px){.G__6998{display:none}}</style><div class="dark" id="switcher"><script>document.getElementById('switcher').className = window.localStorage.getItem('theme') || 'light';</script><style>.light {
+  --package: #8cd0d3;
+  --border-radius: 0;
+  --keyword: #afd8af;
+  --diff-add: #9fc59f;
+  --exception: #cc9393;
+  --number: #8cd0d3;
+  --background: var(--background);
+  --diff-remove: #cc9393;
+  --font-size: 0.9em;
+  --font-family: 'Roboto Mono';
+  --background2: var(--highlight);
+  --boolean: #bfebbf;
+  --text: var(--foreground);
+  --code-comment: #656565;
+  --uri: #dfaf8f;
+  --symbol: var(--foreground);
+  --namespace: #0c607e;
+  --string: #cc9393;
+  --border: var(--highlight);
+  --tag: #f0dfaf;
+  --foreground: #1c1c1e;
+  --background: #ffffff;
+  --primary: #1083ac;
+  --secondary: #1c1c1e;
+  --highlight: #f2f2f2;
+}
+
+.dark {
+  --package: #8cd0d3;
+  --border-radius: 0;
+  --keyword: #afd8af;
+  --diff-add: #9fc59f;
+  --exception: #cc9393;
+  --number: #8cd0d3;
+  --background: var(--background);
+  --diff-remove: #cc9393;
+  --font-size: 0.9em;
+  --font-family: 'Roboto Mono';
+  --background2: var(--highlight);
+  --boolean: #bfebbf;
+  --text: var(--foreground);
+  --code-comment: #656565;
+  --uri: #dfaf8f;
+  --symbol: var(--foreground);
+  --namespace: #0c607e;
+  --string: #cc9393;
+  --border: var(--highlight);
+  --tag: #f0dfaf;
+  --foreground: #c1c1c1;
+  --background: #1c1c1e;
+  --primary: #0c607e;
+  --secondary: #1c1c1e;
+  --highlight: #111113;
+}</style><div class="G__7021" onclick="window.theme = document.getElementById(&apos;switcher&apos;).className === &apos;dark&apos; ? &apos;light&apos; : &apos;dark&apos;;
+              document.getElementById(&apos;switcher&apos;).className = window.theme;
+              window.localStorage.setItem(&apos;theme&apos;, theme);"><svg fill="var(--background)" height="100%" label="icon.theme" viewBox="-1968.4595 -208.47198 177.34795 177.34795" width="100%"><path class="G__6994" connector-curvature="0" d="m -1879.7855,-182.28567 a 62.487613,62.487613 0 0 0 -62.4877,62.48766 62.487613,62.487613 0 0 0 62.4877,62.487654 62.487613,62.487613 0 0 0 62.4877,-62.487654 62.487613,62.487613 0 0 0 -62.4877,-62.48766 z m -0.021,17.21238 v 90.549516 a 45.275454,45.275454 0 0 1 -45.2546,-45.274236 45.275454,45.275454 0 0 1 45.2546,-45.27528 z" id="path343" label="icon.theme"></path></svg></div><div class="G__6965"><div class="G__7020"></div><div class="G__7004"><div class="G__7005"><nav class="G__6980"><div class="G__6987"><a href="/index.html"><svg fill="var(--background)" height="100%" label="icon.glasses" viewBox="-1968.4595 -585.75818 256 132.63841" width="60%"><g class="G__6988" id="g1216" label="icon.glasses" transform="matrix(0.85295192,0,0,0.85295192,-4155.2496,-336.56087)">
+        <path class="G__6990" connector-curvature="0" d="m 2813.4864,-217.48174 c -0.6426,-0.36902 -0.9055,-1.12223 -1.1388,-1.78772 -0.4212,-0.67398 -0.5929,-1.50151 -0.9733,-2.19229 -0.311,-0.59729 -0.4562,-1.28017 -0.7996,-1.87486 -0.2679,-0.74651 -0.6178,-1.44573 -0.8988,-2.18658 -0.2752,-0.74946 -0.6701,-1.42632 -0.9053,-2.19437 -0.3707,-0.65013 -0.52,-1.37378 -0.9226,-1.97759 -0.1762,-0.77539 -0.6051,-1.47218 -0.8789,-2.21401 -0.2594,-0.71545 -0.69,-1.38897 -0.79,-2.15985 -0.2047,-0.73103 0.5182,-1.31539 1.1101,-1.46882 0.7491,0.15534 1.2959,0.78197 1.4003,1.53824 0.3895,0.6637 0.5715,1.41541 0.9509,2.08234 0.2629,0.71914 0.5366,1.36777 0.8881,2.03291 0.1647,0.79577 0.6333,1.48563 0.8667,2.26258 0.4244,0.65452 0.5343,1.46958 0.9555,2.12825 0.2842,0.69581 0.4994,1.44105 0.9005,2.06023 -0.021,0.56593 0.5387,0.76239 0.4856,1.3572 0.397,0.67606 0.5319,1.46813 0.9889,2.10908 0.045,0.67092 0.6833,1.17252 0.3529,1.87474 -0.383,0.38634 -0.7943,0.93812 -1.4521,0.73098 l -0.084,-0.0462 z" id="path1210"></path>
+        <path class="G__6990" connector-curvature="0" d="m 2821.5718,-217.44178 c -0.8819,-0.30145 -0.9149,-1.33803 -1.4296,-1.92631 -0.1529,-0.74143 -0.661,-1.37764 -0.8791,-2.12213 -0.4285,-0.70222 -0.6612,-1.47553 -1.0789,-2.1729 -0.2577,-0.75494 -0.6745,-1.36967 -0.9582,-2.08436 -0.3109,-0.71002 -0.6455,-1.4455 -0.9821,-2.15973 -0.3613,-0.72722 -0.6411,-1.49574 -1.0659,-2.18687 -0.2163,-0.67126 -0.585,-1.24932 -0.8605,-1.88635 -0.3081,-0.72889 -0.6473,-1.45433 -0.979,-2.17855 -0.3982,-0.80443 -0.7488,-1.62163 -1.1486,-2.42629 -0.3094,-0.85375 -0.9851,-1.61476 -0.9699,-2.56114 -0.2299,-0.91236 1.0546,-1.7064 1.7187,-1.07741 0.6596,0.41002 0.822,1.41183 1.1764,2.09754 0.4417,0.78878 0.8408,1.59339 1.1454,2.44685 0.4732,0.69269 0.7139,1.54621 1.0967,2.29076 0.4209,0.73178 0.6451,1.58709 1.1255,2.2307 0.1607,0.78664 0.7267,1.43972 0.9339,2.23462 0.3827,0.7345 0.7796,1.49643 1.051,2.26795 0.4669,0.68639 0.6087,1.39907 1.0728,2.06825 0.1797,0.75316 0.6485,1.40196 0.9094,2.14454 0.4043,0.68853 0.6129,1.43712 1.054,2.08471 0.2019,0.73248 0.6945,1.42754 0.4669,2.25034 -0.024,0.49952 -0.9798,0.96532 -1.3989,0.66578 z" id="path1212"></path>
+        <path class="G__6989" connector-curvature="0" d="m 2640.1636,-250.74435 c -5.674,-0.009 -11.2859,0.2095 -16.4719,0.82434 -3.1481,0.37321 -9.402,1.23969 -13.9144,2.62346 -7.7351,2.37208 -15.2087,4.95932 -22.272,9.64802 -3.1294,6.69342 -2.7606,20.39371 -1.1419,20.47028 0.069,-0.23096 7.5068,2.43064 7.8616,7.73262 0.2888,4.31642 1.8398,16.60309 7.692,22.19195 3.4073,3.25404 8.124,5.30461 12.7128,6.6543 6.7518,1.986 13.9956,1.63421 21.0286,1.89632 11.6277,0.43327 22.9737,1.42087 34.9034,-0.53918 5.2441,-0.92247 7.6639,-2.15845 10.5162,-3.54369 2.8526,-1.38552 4.0937,-1.98179 6.6351,-4.34074 2.5418,-2.35914 6.0502,-7.01702 7.8318,-10.22339 1.7815,-3.20653 2.067,-5.49476 3.2213,-8.54297 1.154,-3.04792 2.6842,-7.21601 3.7061,-9.74518 1.0226,-2.52913 1.2831,-3.83711 2.3402,-5.46163 1.0571,-1.62425 1.9265,-3.47943 3.6573,-4.17433 1.2256,-0.49183 3.6207,-0.5459 4.9291,-0.53664 v 0.0172 c 0,0 0.2501,-0.007 0.4592,-0.0114 0.2084,0.005 0.4584,0.0114 0.4584,0.0114 v -0.0172 c 1.3081,-0.009 3.7038,0.0448 4.9294,0.53664 1.7308,0.6949 2.5996,2.55008 3.6567,4.17433 1.0571,1.62452 1.3182,2.9325 2.3408,5.46163 1.0219,2.52917 2.5521,6.69726 3.7061,9.74518 1.1546,3.04821 1.4398,5.33644 3.2213,8.54297 1.7816,3.20637 5.29,7.86425 7.8318,10.22339 2.5414,2.35895 3.7828,2.95522 6.6351,4.34074 2.8523,1.38524 5.2721,2.62122 10.5162,3.54369 11.9297,1.96005 23.2757,0.97245 34.9033,0.53918 7.0332,-0.26211 14.2764,0.0897 21.0279,-1.89632 4.589,-1.34969 9.3064,-3.40026 12.7137,-6.6543 5.8521,-5.58886 7.4031,-17.87553 7.6919,-22.19195 0.3547,-5.30198 7.792,-7.96358 7.861,-7.73262 1.6186,-0.0766 1.988,-13.77686 -1.1413,-20.47028 -7.0634,-4.6887 -14.5368,-7.27594 -22.272,-9.64802 -4.5125,-1.38377 -10.7662,-2.25025 -13.9144,-2.62346 -8.2974,-0.98376 -17.6856,-0.95222 -26.6736,-0.59953 -8.9877,0.35273 -20.4059,1.4265 -27.0495,2.77336 -6.6439,1.34687 -9.4945,2.33791 -12.8115,3.60658 -3.3172,1.26866 -4.387,3.35962 -7.7579,4.28608 -3.3706,0.92651 -8.6114,0.86726 -12.9328,1.0409 -1.9561,0.0786 -3.9168,0.0786 -5.873,0 -4.3213,-0.17364 -9.5622,-0.11439 -12.9327,-1.0409 -3.3706,-0.92646 -4.4407,-3.01742 -7.758,-4.28608 -3.3169,-1.26867 -6.1675,-2.25971 -12.8111,-3.60658 -6.644,-1.34686 -18.0628,-2.42063 -27.0504,-2.77336 -3.3705,-0.13224 -6.7968,-0.21948 -10.2012,-0.22481 z m 10.0747,5.2387 c 1.7895,0.006 3.5675,0.043 5.3402,0.12385 v 0 c 1.0132,0.0479 2.0261,0.1061 3.0402,0.18102 8.314,0.63291 18.5054,1.91758 24.3449,3.44653 5.8398,1.52895 8.229,1.72918 10.7129,4.18701 2.4842,2.4577 2.849,4.0403 3.4574,8.39057 0.6084,4.3505 -0.2357,12.60354 -1.2928,17.25874 -1.0574,4.65543 -1.5621,7.40333 -3.754,11.75897 -2.1922,4.35558 -6.1389,10.22186 -10.2775,13.25587 -4.1386,3.03371 -14.5303,4.89767 -25.1463,4.76813 -10.6163,-0.12909 -21.3294,0.6309 -31.8926,-0.58112 -5.3089,-0.60879 -12.4557,-1.97601 -15.6863,-4.08222 -7.1017,-4.28075 -9.4068,-13.45619 -10.7308,-20.34327 -1.5847,-8.24269 -1.169,-18.89584 -0.2737,-26.02714 5.1188,-11.63811 24.4578,-11.40881 35.5322,-11.94126 5.7814,-0.15864 11.2576,-0.41376 16.6262,-0.39503 z m 127.2298,0 c 5.3687,-0.0189 10.8453,0.23639 16.6266,0.39503 11.0745,0.53245 30.4135,0.30315 35.5325,11.94126 0.8951,7.1313 1.311,17.78445 -0.2738,26.02714 -1.3241,6.88708 -3.6291,16.06252 -10.7308,20.34327 -3.2308,2.10621 -10.3781,3.47343 -15.6869,4.08222 -10.5634,1.21202 -21.2757,0.45203 -31.892,0.58112 -10.6161,0.12954 -21.0078,-1.73442 -25.1464,-4.76813 -4.1386,-3.03401 -8.0853,-8.90029 -10.2775,-13.25587 -2.1919,-4.35564 -2.6972,-7.10354 -3.7543,-11.75897 -1.0574,-4.6552 -1.9008,-12.90824 -1.2925,-17.25874 0.6084,-4.35027 0.9726,-5.93287 3.4568,-8.39057 2.4838,-2.45783 4.8741,-2.65806 10.7136,-4.18701 5.8398,-1.52895 16.0308,-2.81362 24.3448,-3.44653 1.0141,-0.0749 2.027,-0.13309 3.0402,-0.18102 v 0 c 1.7727,-0.0808 3.5501,-0.11758 5.3397,-0.12385 z" id="path1214" nodetypes="ccccccccccccccccccccccccccccccccccccccccccaaccccccccccccccccccccccccccccccccccccccc"></path>
+      </g></svg></a></div><ul class="G__6981"><li class="G__6982"><a href="/index.html">home</a></li><li class="G__6985"><a href="/blog/index.html">blog</a></li><li class="G__6982"><a href="/projects.html">projects</a></li><li class="G__6982"><a href="/resume.html">resume</a></li><li class="G__6982"><a href="/contact.html">contact</a></li></ul></nav><div class="G__6980"><div class="G__7007">© 2026. All rights reserved.</div></div></div></div><style>#menu-btn:checked ~ .mobile-nav {
+  left: 0;
+}
+
+.mobile-nav {
+  left: -100vw;
+}</style><div class="G__6966"><div><input class="G__7003" id="menu-btn" type="checkbox" /><label class="G__6998" for="menu-btn"><svg fill="var(--background)" height="100%" label="icon.menu" viewBox="-1968.4595 -393.10843 256 256" width="100%"><g class="G__6988" id="g274" label="icon.menu" transform="translate(0.60988617,-1.415905)">
+        <rect class="G__6994" height="46.772163" id="rect265" rx="0" ry="0" width="181.24214" x="-1931.6904" y="-353.22443"></rect>
+        <rect class="G__6994" height="46.772163" id="rect267" rx="0" ry="0" width="181.24214" x="-1931.6904" y="-287.07861"></rect>
+        <rect class="G__6994" height="46.772163" id="rect269" rx="0" ry="0" width="181.24214" x="-1931.6904" y="-220.93279"></rect>
+      </g></svg></label><div class="G__6997"></div><div class="G__6996"></div><div class="mobile-nav G__6979"><label class="G__6992" for="menu-btn"><svg fill="var(--background)" height="100%" label="icon.close" viewBox="-1968.4595 -75.608429 256 256" width="100%"><g class="G__6988" id="g288" label="icon.close" transform="translate(0.60988617,316.08409)">
+        <rect class="G__6994" height="46.772163" id="rect284" rx="0" ry="0" transform="rotate(-45)" width="181.24214" x="-1205.9949" y="-1511.6775"></rect>
+        <rect class="G__6994" height="46.772163" id="rect329" rx="0" ry="0" transform="rotate(45)" width="181.24214" x="-1578.9125" y="1091.9877"></rect>
+      </g></svg></label><nav class="G__6980"><div class="G__6987"><a href="/index.html"><svg fill="var(--background)" height="100%" label="icon.glasses" viewBox="-1968.4595 -585.75818 256 132.63841" width="60%"><g class="G__6988" id="g1216" label="icon.glasses" transform="matrix(0.85295192,0,0,0.85295192,-4155.2496,-336.56087)">
+        <path class="G__6990" connector-curvature="0" d="m 2813.4864,-217.48174 c -0.6426,-0.36902 -0.9055,-1.12223 -1.1388,-1.78772 -0.4212,-0.67398 -0.5929,-1.50151 -0.9733,-2.19229 -0.311,-0.59729 -0.4562,-1.28017 -0.7996,-1.87486 -0.2679,-0.74651 -0.6178,-1.44573 -0.8988,-2.18658 -0.2752,-0.74946 -0.6701,-1.42632 -0.9053,-2.19437 -0.3707,-0.65013 -0.52,-1.37378 -0.9226,-1.97759 -0.1762,-0.77539 -0.6051,-1.47218 -0.8789,-2.21401 -0.2594,-0.71545 -0.69,-1.38897 -0.79,-2.15985 -0.2047,-0.73103 0.5182,-1.31539 1.1101,-1.46882 0.7491,0.15534 1.2959,0.78197 1.4003,1.53824 0.3895,0.6637 0.5715,1.41541 0.9509,2.08234 0.2629,0.71914 0.5366,1.36777 0.8881,2.03291 0.1647,0.79577 0.6333,1.48563 0.8667,2.26258 0.4244,0.65452 0.5343,1.46958 0.9555,2.12825 0.2842,0.69581 0.4994,1.44105 0.9005,2.06023 -0.021,0.56593 0.5387,0.76239 0.4856,1.3572 0.397,0.67606 0.5319,1.46813 0.9889,2.10908 0.045,0.67092 0.6833,1.17252 0.3529,1.87474 -0.383,0.38634 -0.7943,0.93812 -1.4521,0.73098 l -0.084,-0.0462 z" id="path1210"></path>
+        <path class="G__6990" connector-curvature="0" d="m 2821.5718,-217.44178 c -0.8819,-0.30145 -0.9149,-1.33803 -1.4296,-1.92631 -0.1529,-0.74143 -0.661,-1.37764 -0.8791,-2.12213 -0.4285,-0.70222 -0.6612,-1.47553 -1.0789,-2.1729 -0.2577,-0.75494 -0.6745,-1.36967 -0.9582,-2.08436 -0.3109,-0.71002 -0.6455,-1.4455 -0.9821,-2.15973 -0.3613,-0.72722 -0.6411,-1.49574 -1.0659,-2.18687 -0.2163,-0.67126 -0.585,-1.24932 -0.8605,-1.88635 -0.3081,-0.72889 -0.6473,-1.45433 -0.979,-2.17855 -0.3982,-0.80443 -0.7488,-1.62163 -1.1486,-2.42629 -0.3094,-0.85375 -0.9851,-1.61476 -0.9699,-2.56114 -0.2299,-0.91236 1.0546,-1.7064 1.7187,-1.07741 0.6596,0.41002 0.822,1.41183 1.1764,2.09754 0.4417,0.78878 0.8408,1.59339 1.1454,2.44685 0.4732,0.69269 0.7139,1.54621 1.0967,2.29076 0.4209,0.73178 0.6451,1.58709 1.1255,2.2307 0.1607,0.78664 0.7267,1.43972 0.9339,2.23462 0.3827,0.7345 0.7796,1.49643 1.051,2.26795 0.4669,0.68639 0.6087,1.39907 1.0728,2.06825 0.1797,0.75316 0.6485,1.40196 0.9094,2.14454 0.4043,0.68853 0.6129,1.43712 1.054,2.08471 0.2019,0.73248 0.6945,1.42754 0.4669,2.25034 -0.024,0.49952 -0.9798,0.96532 -1.3989,0.66578 z" id="path1212"></path>
+        <path class="G__6989" connector-curvature="0" d="m 2640.1636,-250.74435 c -5.674,-0.009 -11.2859,0.2095 -16.4719,0.82434 -3.1481,0.37321 -9.402,1.23969 -13.9144,2.62346 -7.7351,2.37208 -15.2087,4.95932 -22.272,9.64802 -3.1294,6.69342 -2.7606,20.39371 -1.1419,20.47028 0.069,-0.23096 7.5068,2.43064 7.8616,7.73262 0.2888,4.31642 1.8398,16.60309 7.692,22.19195 3.4073,3.25404 8.124,5.30461 12.7128,6.6543 6.7518,1.986 13.9956,1.63421 21.0286,1.89632 11.6277,0.43327 22.9737,1.42087 34.9034,-0.53918 5.2441,-0.92247 7.6639,-2.15845 10.5162,-3.54369 2.8526,-1.38552 4.0937,-1.98179 6.6351,-4.34074 2.5418,-2.35914 6.0502,-7.01702 7.8318,-10.22339 1.7815,-3.20653 2.067,-5.49476 3.2213,-8.54297 1.154,-3.04792 2.6842,-7.21601 3.7061,-9.74518 1.0226,-2.52913 1.2831,-3.83711 2.3402,-5.46163 1.0571,-1.62425 1.9265,-3.47943 3.6573,-4.17433 1.2256,-0.49183 3.6207,-0.5459 4.9291,-0.53664 v 0.0172 c 0,0 0.2501,-0.007 0.4592,-0.0114 0.2084,0.005 0.4584,0.0114 0.4584,0.0114 v -0.0172 c 1.3081,-0.009 3.7038,0.0448 4.9294,0.53664 1.7308,0.6949 2.5996,2.55008 3.6567,4.17433 1.0571,1.62452 1.3182,2.9325 2.3408,5.46163 1.0219,2.52917 2.5521,6.69726 3.7061,9.74518 1.1546,3.04821 1.4398,5.33644 3.2213,8.54297 1.7816,3.20637 5.29,7.86425 7.8318,10.22339 2.5414,2.35895 3.7828,2.95522 6.6351,4.34074 2.8523,1.38524 5.2721,2.62122 10.5162,3.54369 11.9297,1.96005 23.2757,0.97245 34.9033,0.53918 7.0332,-0.26211 14.2764,0.0897 21.0279,-1.89632 4.589,-1.34969 9.3064,-3.40026 12.7137,-6.6543 5.8521,-5.58886 7.4031,-17.87553 7.6919,-22.19195 0.3547,-5.30198 7.792,-7.96358 7.861,-7.73262 1.6186,-0.0766 1.988,-13.77686 -1.1413,-20.47028 -7.0634,-4.6887 -14.5368,-7.27594 -22.272,-9.64802 -4.5125,-1.38377 -10.7662,-2.25025 -13.9144,-2.62346 -8.2974,-0.98376 -17.6856,-0.95222 -26.6736,-0.59953 -8.9877,0.35273 -20.4059,1.4265 -27.0495,2.77336 -6.6439,1.34687 -9.4945,2.33791 -12.8115,3.60658 -3.3172,1.26866 -4.387,3.35962 -7.7579,4.28608 -3.3706,0.92651 -8.6114,0.86726 -12.9328,1.0409 -1.9561,0.0786 -3.9168,0.0786 -5.873,0 -4.3213,-0.17364 -9.5622,-0.11439 -12.9327,-1.0409 -3.3706,-0.92646 -4.4407,-3.01742 -7.758,-4.28608 -3.3169,-1.26867 -6.1675,-2.25971 -12.8111,-3.60658 -6.644,-1.34686 -18.0628,-2.42063 -27.0504,-2.77336 -3.3705,-0.13224 -6.7968,-0.21948 -10.2012,-0.22481 z m 10.0747,5.2387 c 1.7895,0.006 3.5675,0.043 5.3402,0.12385 v 0 c 1.0132,0.0479 2.0261,0.1061 3.0402,0.18102 8.314,0.63291 18.5054,1.91758 24.3449,3.44653 5.8398,1.52895 8.229,1.72918 10.7129,4.18701 2.4842,2.4577 2.849,4.0403 3.4574,8.39057 0.6084,4.3505 -0.2357,12.60354 -1.2928,17.25874 -1.0574,4.65543 -1.5621,7.40333 -3.754,11.75897 -2.1922,4.35558 -6.1389,10.22186 -10.2775,13.25587 -4.1386,3.03371 -14.5303,4.89767 -25.1463,4.76813 -10.6163,-0.12909 -21.3294,0.6309 -31.8926,-0.58112 -5.3089,-0.60879 -12.4557,-1.97601 -15.6863,-4.08222 -7.1017,-4.28075 -9.4068,-13.45619 -10.7308,-20.34327 -1.5847,-8.24269 -1.169,-18.89584 -0.2737,-26.02714 5.1188,-11.63811 24.4578,-11.40881 35.5322,-11.94126 5.7814,-0.15864 11.2576,-0.41376 16.6262,-0.39503 z m 127.2298,0 c 5.3687,-0.0189 10.8453,0.23639 16.6266,0.39503 11.0745,0.53245 30.4135,0.30315 35.5325,11.94126 0.8951,7.1313 1.311,17.78445 -0.2738,26.02714 -1.3241,6.88708 -3.6291,16.06252 -10.7308,20.34327 -3.2308,2.10621 -10.3781,3.47343 -15.6869,4.08222 -10.5634,1.21202 -21.2757,0.45203 -31.892,0.58112 -10.6161,0.12954 -21.0078,-1.73442 -25.1464,-4.76813 -4.1386,-3.03401 -8.0853,-8.90029 -10.2775,-13.25587 -2.1919,-4.35564 -2.6972,-7.10354 -3.7543,-11.75897 -1.0574,-4.6552 -1.9008,-12.90824 -1.2925,-17.25874 0.6084,-4.35027 0.9726,-5.93287 3.4568,-8.39057 2.4838,-2.45783 4.8741,-2.65806 10.7136,-4.18701 5.8398,-1.52895 16.0308,-2.81362 24.3448,-3.44653 1.0141,-0.0749 2.027,-0.13309 3.0402,-0.18102 v 0 c 1.7727,-0.0808 3.5501,-0.11758 5.3397,-0.12385 z" id="path1214" nodetypes="ccccccccccccccccccccccccccccccccccccccccccaaccccccccccccccccccccccccccccccccccccccc"></path>
+      </g></svg></a></div><ul class="G__6981"><li class="G__6982"><a href="/index.html">home</a></li><li class="G__6985"><a href="/blog/index.html">blog</a></li><li class="G__6982"><a href="/projects.html">projects</a></li><li class="G__6982"><a href="/resume.html">resume</a></li><li class="G__6982"><a href="/contact.html">contact</a></li></ul></nav></div><div class="G__6967"><style>.highlight .hll{background-color:#ffc}.highlight .c{color:#998;font-style:italic}.highlight .err{color:#a61717;background-color:#e3d2d2}.highlight .k{color:var(--primary);font-weight:var(--keyword)}.highlight .o{color:var(--primary);font-weight:bold}.highlight .cm{color:#998;font-style:italic}.highlight .cp{color:#999;font-weight:bold;font-style:italic}.highlight .c1{color:var(--code-comment);font-style:italic}.highlight .cs{color:#999;font-weight:bold;font-style:italic}.highlight .gd{color:var(--primary);background-color:#fdd}.highlight .ge{color:var(--primary);font-style:italic}.highlight .gr{color:#a00}.highlight .gh{color:#999}.highlight .gi{color:var(--primary);background-color:#dfd}.highlight .go{color:#888}.highlight .gp{color:#555}.highlight .gs{font-weight:bold}.highlight .gu{color:#aaa}.highlight .gt{color:#a00}.highlight .kc{color:var(--primary);font-weight:bold}.highlight .kd{color:var(--primary);font-weight:bold}.highlight .kn{color:var(--primary);font-weight:bold}.highlight .kp{color:var(--primary);font-weight:bold}.highlight .kr{color:var(--primary);font-weight:bold}.highlight .kt{color:#458;font-weight:bold}.highlight .m{color:var(--number)}.highlight .s{color:var(--string)}.highlight .na{color:teal}.highlight .nb{color:var(--primary)}.highlight .nc{color:#458;font-weight:bold}.highlight .no{color:teal}.highlight .nd{color:#3c5d5d;font-weight:bold}.highlight .ni{color:purple}.highlight .ne{color:#900;font-weight:bold}.highlight .nf{color:var(--primary);font-weight:bold}.highlight .nl{color:#900;font-weight:bold}.highlight .nn{color:#555}.highlight .nt{color:var(--keyword)}.highlight .nv{color:var(--symbol)}.highlight .ow{color:var(--primary);font-weight:bold}.highlight .w{color:#bbb}.highlight .mf{color:#099}.highlight .mh{color:#099}.highlight .mi{color:#099}.highlight .mo{color:#099}.highlight .sb{color:#d01040}.highlight .sc{color:#d01040}.highlight .sd{color:#d01040}.highlight .s2{color:var(--string)}.highlight .se{color:#d01040}.highlight .sh{color:#d01040}.highlight .si{color:#d01040}.highlight .sx{color:#d01040}.highlight .sr{color:#009926}.highlight .s1{color:var(--string)}.highlight .ss{color:var(--keyword)}.highlight .bp{color:#999}.highlight .vc{color:teal}.highlight .vg{color:teal}.highlight .vi{color:teal}.highlight .il{color:#099}.markdown-body h1{font-size:3rem}.markdown-body h2{font-size:2rem}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{font-family:Lato}.markdown-body h1{padding-bottom:.3em;border-bottom:1px solid var(--highlight)}.markdown-body p{font-weight:100;font-size:1.4rem;line-height:2rem;letter-spacing:.1px}.markdown-body a{color:var(--primary)}.markdown-body .blog-post a:hover{text-decoration:underline}.markdown-body li{font-weight:100;font-size:1.2rem;line-height:1.5rem;letter-spacing:.05px}.markdown-body p code{font-size:.8em;padding:3px}.markdown-body code{font-family:'Roboto Mono',monospace;background:var(--highlight)}.markdown-body pre{margin:0;padding:16px;font-size:12pt;background:var(--highlight);overflow:auto;font-family:'Roboto Mono',monospace}.markdown-body figure{margin:40px 20px;overflow:auto}</style><div class="markdown-body G__6968"><div><article><header class="G__6977"><a href="#open-a-portal-closer-to-your-data"><h1 class="G__6978" id="open-a-portal-closer-to-your-data">Open a Portal Closer to Your Data</h1></a><span>August 14, 2026</span></header><div class="blog-post">
+
+<div><script type="text/javascript">window.portal.ui.options.patch("{:theme :djblue.github.io.blog/embed, :themes #:djblue.github.io.blog{:embed {:portal.colors/string \"#cc9393\", :portal.colors/keyword \"#afd8af\", :portal.colors/exception \"#cc9393\", :font-size \"0.9em\", :portal.colors/text \"var(--foreground)\", :portal.colors/background2 \"var(--highlight)\", :portal.colors/boolean \"#bfebbf\", :portal.colors/tag \"#f0dfaf\", :portal.colors/uri \"#dfaf8f\", :portal.colors/namespace \"#0c607e\", :portal.colors/diff-add \"#9fc59f\", :portal.colors/package \"#8cd0d3\", :portal.colors/border \"var(--highlight)\", :portal.colors/symbol \"var(--foreground)\", :portal.colors/diff-remove \"#cc9393\", :portal.colors/number \"#8cd0d3\", :portal.colors/background \"var(--background)\", :border-radius 0, :font-family \"'Roboto Mono'\", :djblue.github.io.theme/code-comment \"#656565\"}}}")</script></div>
+
+
+
+<p>
+A key value proposition of ClojureScript has always been that it is Clojure. In
+this blog post we explore how true that statement is by trying to port the UI of
+Portal to run server-side to solve some of the more challenging aspects of
+Portal's RPC-based architecture.
+</p>
+
+<a href="#the-challenge-of-rpc"><h2 class="G__6970" id="the-challenge-of-rpc">The Challenge of RPC</h2></a>
+
+<p>
+Before we get into the how, let's start with the why. Since its introduction,
+Portal has had a typical modern web architecture, a rich JavaScript client
+(written in ClojureScript) connected to a server via WebSockets. Your data
+structures are serialized and shuttled through the socket to various
+<a href="https://github.com/reagent-project/reagent">reagent</a> components to help visualize your data.
+</p>
+
+<p>
+On the surface, it appears to be a reasonable approach, and at first I thought
+it was. However, a key challenge with this approach has been finding a good
+out-of-process representation of arbitrary in-process objects. There is a whole
+layer that exists on both the server and the client dedicated to this problem.
+</p>
+
+<p>
+The challenge of a good representation is multi-faceted:
+</p>
+<ul>
+<li>It should work for any object a user may want to inspect.</li>
+<li>It should link back to the original runtime object.</li>
+<li>It should work for objects that may produce invalid edn via pprint.</li>
+<li>It should allow for writing simple viewers.</li>
+<li>It should be fast to produce and consume.</li>
+<li>It should support multiple runtimes.</li>
+<li>And most importantly, it can never fail!</li>
+</ul>
+<p>
+These requirements led me down the rabbit hole of building <a href="https://github.com/djblue/portal/blob/master/src/portal/runtime/cson.cljc">CSON</a>. It addresses many of these challenges, but that
+implementation is far from simple. The Portal runtime uses CSON in conjunction
+with a bunch of state on the server for tracking object references and watching
+atoms. Moreover, the server needs to inform the client when an atom has changed,
+and the client needs to inform the server when it no longer cares for a
+particular value. Don't even get me started on doing all of this stuff
+concurrently (which I have failed at <a href="https://github.com/djblue/portal/commit/df2f03d619cf48bd0b1f8b4d0b35365d158f47e2">several</a> <a href="https://github.com/djblue/portal/commit/ed8d5806d081106cadf7000234f46cf0b5d75331">times</a> <a href="https://github.com/djblue/portal/commit/2d7c68b8606ba6fb1800307dcbdc805eb9a1a422">now</a>)!
+</p>
+
+<a href="#server-side-rendering-(ssr)"><h2 class="G__6970" id="server-side-rendering-(ssr)">Server Side Rendering (SSR)</h2></a>
+
+<p>
+With the resurgence of interest in thinner clients that do more work on the
+server via tools such as <a href="https://htmx.org/">htmx</a> and <a href="https://data-star.dev/">data-star</a>, I got to thinking
+about what Portal would look like with a similar architecture. I could
+completely bypass the challenge of a good out-of-process representation if the
+UI lived in the same process! Sometimes the best solution is to solve a simpler
+problem. However, as we all know, simple is not always easy.
+</p>
+
+<p>
+The Portal UI consists mostly of reagent views, which is <q>a minimalistic
+ClojureScript interface to React.js</q>, and React.js is a <b>JavaScript</b>
+library. Moreover, the UI took years of work and represents about half of the
+code in the Portal repository. I didn't want to rewrite the exact same UI in a
+new framework just so I could run it on the server. Also, I didn't want to sign
+up for maintaining two independent versions of the Portal UI. I just wanted to
+run the UI closer to the data it cared about. Since that didn't seem doable at
+the time, I didn't dig much deeper.
+</p>
+
+<p>
+Then I watched the talk <a href="https://www.youtube.com/watch?v=8W6Lr1hRgXo">From Tomorrow
+Back to Yesterday: A Tale of Two Web Architectures</a> by <a href="https://github.com/davidyang">David
+Yang</a> and got bit by the SSR bug again. The talk described how David's team
+went from a client-centric architecture to a server-focused one after facing
+their own challenges with rich clients. He described how HTML elements would
+receive UUIDs that would be used by server-side event handlers. And how events
+would be collected into a queue and processed by a hiccup-based render loop. The
+loop would be capped at 60Hz, similar to how a video game would implement
+vertical sync. After the talk, I was still uncertain about how to port my
+reagent components, but the idea of a SSR version of Portal seemed far more
+tangible.
+</p>
+
+<a href="#portal.runtime.react"><h2 class="G__6970" id="portal.runtime.react">portal.runtime.react</h2></a>
+
+<p>
+A few months after the talk, I had a wild idea: what if I had a version of
+reagent that I could use on the server? Wouldn't that just solve all my
+problems? That was the biggest blocker in running the Portal UI code on the
+server, as most of it was just common Clojure and renaming the files from
+<code>.cljs</code> to <code>.cljc</code> is trivial.
+</p>
+
+<p>
+It didn't need to be a full implementation, just enough to get the Portal
+viewers working on the server. I could start small, with basic reagent
+components that returned hiccup, and slowly build it up with a set of unit tests
+to keep my confidence up as I went. Then I could add hooks like
+<code>use-state</code> and <code>use-effect</code>, as the Portal UI code makes
+good use of React hooks. So I got started, and before I knew it, I had something
+that might actually run Portal's UI code.
+</p>
+
+<p>
+Now I knew my toy implementation of reagent probably had plenty of issues, so I
+started with a small yet challenging subset of Portal's UI code. I slowly took
+bits out of <code>portal.ui.inspector</code> since I knew that if I could debug
+my way through it, getting other parts working would be easier, and that the
+project was worth pursuing. As I found issues, I would update my unit tests to
+include edge cases I hadn't considered, and little by little I found myself with
+more and more of <code>portal.ui.inspector</code> working.
+</p>
+
+<p>
+Over the course of a few weeks, I was able to get the majority of Portal's UI
+code rendering. For the features that couldn't be moved to the server, such as
+visibility detection and window scrolling, I borrowed the approach from <a href="https://github.com/swannodette">David Nolen</a>'s <a href="https://www.youtube.com/watch?v=BeE00vGC36E">A
+ClojureScript Survival Kit</a> Conj talk and used <a href="https://github.com/djblue/portal/blob/master/src/portal/ui/web_components.cljs">Web
+Components</a>!  If you want all the details, you can view them <a href="https://github.com/djblue/portal/compare/0.63.1...0.64.0">here</a>.
+</p>
+
+<a href="#portal.runtime.jvm.ssr"><h2 class="G__6970" id="portal.runtime.jvm.ssr">portal.runtime.jvm.ssr</h2></a>
+
+<p>
+When I was happy with rendering, I moved to implementing a minimal harness for
+the render loop. It looks very similar to how David described his architecture,
+but leverages Portal's existing infrastructure so that porting SSR to other
+runtimes is easier.
+</p>
+
+<p>
+After this point, there were still a few minor problems. Portal needed a thin
+client to receive the output from the render loop and resolve JavaScript
+dependencies for the Web Components. And with that, the hard parts were proven
+out and things were starting to come together.
+</p>
+
+<p>
+It was a pleasure seeing the Portal UI slowly come to life via this new SSR
+implementation and watching how seamlessly Portal's viewers ran on the JVM. This
+code was never intended to run on the JVM, and yet here it was, showcasing how
+portable Clojure is and how well ClojureScript implements Clojure.
+</p>
+
+<a href="#introducing-"><h2 class="G__6970" id="introducing-">Introducing <code>{:mode :ssr}</code></h2></a>
+
+<p>
+Now, as a Portal user, you may wonder, how difficult it is to get the SSR version
+of Portal running? That's the best part! As of <a href="https://github.com/djblue/portal/releases/tag/0.64.0">0.64.0</a>, it's
+as easy as the following:
+</p>
+
+<div><div class="G__6971">user.clj</div><div class="blog-post"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">require</span> <span class="o">'</span><span class="p">[</span><span class="nv">portal.api</span> <span class="ss">:as</span> <span class="nv">p</span><span class="p">])</span>
+<span class="p">(</span><span class="nf">p/open</span> <span class="p">{</span><span class="ss">:mode</span> <span class="ss">:ssr</span><span class="p">})</span>
+<span class="c1">;; use portal.api as you normally would</span>
+</pre></div>
+</div></div>
+
+<p>
+Based on what features you use in the Portal UI, you may find it exceedingly
+challenging to tell the RPC and SSR versions apart. If you can't, I would call
+this port a success!
+</p>
+
+<a href="#the-future"><h2 class="G__6970" id="the-future">The Future</h2></a>
+
+<p>
+The RPC version of Portal isn't going anywhere, and will remain the default to
+preserve backward compatibility. Ideally, since they share much of the same
+code, improvements to either mode would improve the other. Eventually, perhaps
+the RPC version can be simplified since SSR can be used when a deeper
+integration with your runtime is required.
+</p>
+
+<p>
+SSR also enables UI extensibility from the comfort of your REPL runtime, without
+the challenge of managing multiple runtimes. This should reduce the barrier to
+entry for implementing and sharing custom viewers, but only time will tell.
+</p>
+
+<p>
+My priorities moving forward for Portal are to fix issues as they are
+encountered, but also to explore what's possible now that wasn't before. For
+example, getting infinite sequences would be substantially simpler for SSR, but
+wasn't part of the initial scope.
+</p>
+
+<p>
+If you are feeling inspired or have any interesting thoughts you'd like to
+share, please leave a comment below, or join the conversation on the Clojurians
+Slack <a href="https://clojurians.slack.com/channels/portal">#portal</a>.
+</p></div></article><div class="G__6969"><div id="disqus_thread"></div><script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'djblue'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();</script><noscript>Please enable JavaScript to view the <a>comments powered by Disqus.</a><a class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></noscript></div></div></div></div></div></div></div></div></div></body></html>
